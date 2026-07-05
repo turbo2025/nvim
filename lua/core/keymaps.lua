@@ -1,11 +1,29 @@
 local map = vim.keymap.set
 
-map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
+--------------------------------------------------------
+-- Save / Quit
+--------------------------------------------------------
+
+map("n", "<leader>w", "<cmd>w<cr>", { desc = "Write" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 
-map("n", "<leader>nh", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
+--------------------------------------------------------
+-- Buffer
+--------------------------------------------------------
 
-map("n", "<C-h>", "<C-w>h", { desc = "Move left" })
-map("n", "<C-j>", "<C-w>j", { desc = "Move down" })
-map("n", "<C-k>", "<C-w>k", { desc = "Move up" })
-map("n", "<C-l>", "<C-w>l", { desc = "Move right" })
+map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
+
+--------------------------------------------------------
+-- Window
+--------------------------------------------------------
+
+map("n", "<leader>wh", "<C-w>h")
+map("n", "<leader>wj", "<C-w>j")
+map("n", "<leader>wk", "<C-w>k")
+map("n", "<leader>wl", "<C-w>l")
+
+--------------------------------------------------------
+-- Clear Highlight
+--------------------------------------------------------
+
+map("n", "<Esc>", "<cmd>noh<cr>")
