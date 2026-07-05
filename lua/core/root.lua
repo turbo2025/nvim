@@ -1,29 +1,28 @@
 --------------------------------------------------------
--- Imports
---------------------------------------------------------
-local uv = vim.uv
---------------------------------------------------------
--- State
+-- Project Root
 --------------------------------------------------------
 local M = {}
 --------------------------------------------------------
--- Public
+-- Helpers
 --------------------------------------------------------
-local function find(pattern)
-    local file = vim.fs.find(pattern, {
+local function find(markers)
+    local path = vim.api.nvim_buf_get_name(0)
+    local file = vim.fs.find(markers, {
         upward = true,
-        path = vim.api.nvim_buf_get_name(0),
+        path = path,
     })[1]
     if file then
         return vim.fs.dirname(file)
     end
-    return vim.loop.cwd()
+    return vim.uv.cwd()
 end
-
+--------------------------------------------------------
+-- Languages
+--------------------------------------------------------
 function M.go()
     return find({
-        "go.mod",
         "go.work",
+        "go.mod",
     })
 end
 
@@ -36,15 +35,26 @@ end
 function M.python()
     return find({
         "pyproject.toml",
+        "uv.lock",
+        "poetry.lock",
         "requirements.txt",
-        ".venv",
     })
 end
 
+--------------------------------------------------------
+-- Git
+--------------------------------------------------------
 function M.git()
-    return M.find({
+    return find({
         ".git",
     })
+end
+
+--------------------------------------------------------
+-- Current
+--------------------------------------------------------
+function M.cwd()
+    return vim.uv.cwd()
 end
 
 return M

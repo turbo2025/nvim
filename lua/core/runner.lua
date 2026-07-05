@@ -10,6 +10,20 @@ local terminal = require("core.terminal")
 -- State
 --------------------------------------------------------
 M.last = nil
+
+--------------------------------------------------------
+-- Run In
+--------------------------------------------------------
+
+---@param cwd string
+---@param cmd string[]
+---@param opts? table
+function M.run_in(cwd, cmd, opts)
+    opts = opts or {}
+    opts.cwd = cwd
+    return M.run(cmd, opts)
+end
+
 --------------------------------------------------------
 -- Run
 --------------------------------------------------------

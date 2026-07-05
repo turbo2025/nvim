@@ -16,9 +16,7 @@ local last_test = nil
 -- Helpers
 --------------------------------------------------------
 local function run(cmd)
-    runner.run(cmd, {
-        cwd = root.go(),
-    })
+    runner.run_in(root.go(), cmd)
 end
 --------------------------------------------------------
 -- Run
