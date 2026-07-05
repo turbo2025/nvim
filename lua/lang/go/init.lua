@@ -1,53 +1,57 @@
+--------------------------------------------------------
+-- Imports
+--------------------------------------------------------
 local map = vim.keymap.set
-local task = require("core.tasks")
-local util = require("lang.go.utils")
-require("lang.go.tasks")
+local go = require("lang.go.tasks")
 local debug = require("lang.go.dap")
 --------------------------------------------------------
 -- Run
 --------------------------------------------------------
-map("n", "<leader>rr", function()
-    task.run("go:run")
-end, { desc = "Go Run" })
-map("n", "<leader>rb", function()
-    task.run("go:build")
-end, { desc = "Go Build" })
+map("n", "<leader>rr", go.run, {
+    desc = "Go Run",
+})
+map("n", "<leader>rb", go.build, {
+    desc = "Go Build",
+})
 --------------------------------------------------------
 -- Test
 --------------------------------------------------------
-map("n", "<leader>tt", function()
-    task.run("go:test")
-end, { desc = "Go Test Package" })
-map("n", "<leader>ta", function()
-    task.run("go:test-all")
-end, { desc = "Go Test All Packages" })
-map("n", "<leader>tf", util.run_test, {
-    desc = "Go Test Function",
+map("n", "<leader>tt", go.test_package, {
+    desc = "Go Test Package",
 })
-map("n", "<leader>tl", util.run_last_test, {
-    desc = "Go Test Last",
+map("n", "<leader>ta", go.test_all, {
+    desc = "Go Test All Packages",
+})
+map("n", "<leader>tf", go.test_function, {
+    desc = "Go Test Current Function",
+})
+map("n", "<leader>tl", go.test_last, {
+    desc = "Go Test Last Function",
 })
 --------------------------------------------------------
 -- Benchmark
 --------------------------------------------------------
-map("n", "<leader>tb", util.run_benchmark, {
-    desc = "Go Benchmark",
+map("n", "<leader>tb", go.benchmark_current, {
+    desc = "Go Benchmark Current",
+})
+map("n", "<leader>tB", go.benchmark_package, {
+    desc = "Go Benchmark Package",
 })
 --------------------------------------------------------
 -- Coverage
 --------------------------------------------------------
-map("n", "<leader>tc", util.coverage, {
+map("n", "<leader>tc", go.coverage, {
     desc = "Go Coverage",
 })
 --------------------------------------------------------
--- Mod
+-- Go Modules
 --------------------------------------------------------
-map("n", "<leader>mt", function()
-    task.run("go:tidy")
-end, { desc = "Go Mod Tidy" })
-map("n", "<leader>mg", function()
-    task.run("go:generate")
-end, { desc = "Go Generate" })
+map("n", "<leader>mt", go.tidy, {
+    desc = "Go Mod Tidy",
+})
+map("n", "<leader>mg", go.generate, {
+    desc = "Go Generate",
+})
 --------------------------------------------------------
 -- Debug
 --------------------------------------------------------
@@ -59,4 +63,7 @@ map("n", "<leader>dp", debug.debug_package, {
 })
 map("n", "<leader>dm", debug.debug_main, {
     desc = "Debug Main",
+})
+map("n", "<leader>dl", debug.debug_last, {
+    desc = "Debug Last",
 })

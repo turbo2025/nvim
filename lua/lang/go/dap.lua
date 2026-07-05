@@ -1,4 +1,8 @@
 --------------------------------------------------------
+-- Go DAP
+--------------------------------------------------------
+local M = {}
+--------------------------------------------------------
 -- Imports
 --------------------------------------------------------
 local dap = require("dap")
@@ -26,7 +30,7 @@ dap.configurations.go = {
         type = "go",
         name = "Debug Package",
         request = "launch",
-        program = "${workspaceFolder}",
+        program = "${fileDirname}",
     },
     {
         type = "go",
@@ -46,13 +50,12 @@ dap.configurations.go = {
         name = "Debug Test Package",
         request = "launch",
         mode = "test",
-        program = "${workspaceFolder}",
+        program = "${fileDirname}",
     },
 }
 --------------------------------------------------------
--- Public
+-- Debug Current Test
 --------------------------------------------------------
-local M = {}
 function M.debug_current_test()
     local test = util.current_test()
     if not test then
@@ -71,14 +74,21 @@ function M.debug_current_test()
     })
 end
 
+--------------------------------------------------------
+-- Debug Package
+--------------------------------------------------------
 function M.debug_package()
     dap.run({
         type = "go",
         request = "launch",
+        mode = "debug",
         program = util.current_package(),
     })
 end
 
+--------------------------------------------------------
+-- Debug Main
+--------------------------------------------------------
 function M.debug_main()
     if not util.is_main() then
         vim.notify("Current file is not package main", vim.log.levels.WARN)
@@ -89,6 +99,13 @@ function M.debug_main()
         request = "launch",
         program = util.current_file(),
     })
+end
+
+--------------------------------------------------------
+-- Debug Last
+--------------------------------------------------------
+function M.debug_last()
+    dap.run_last()
 end
 
 return M

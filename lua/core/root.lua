@@ -1,50 +1,40 @@
 --------------------------------------------------------
 -- Imports
 --------------------------------------------------------
-
 local uv = vim.uv
-
 --------------------------------------------------------
 -- State
 --------------------------------------------------------
-
 local M = {}
-
 --------------------------------------------------------
 -- Public
 --------------------------------------------------------
-
----@param markers string[]
----@param start? string
----@return string
-function M.find(markers, start)
-    start = start or vim.api.nvim_buf_get_name(0)
-    local dir = vim.fs.dirname(start)
-    local result = vim.fs.find(markers, {
+local function find(pattern)
+    local file = vim.fs.find(pattern, {
         upward = true,
-        path = dir,
+        path = vim.api.nvim_buf_get_name(0),
     })[1]
-    if result then
-        return vim.fs.dirname(result)
+    if file then
+        return vim.fs.dirname(file)
     end
-    return uv.cwd()
+    return vim.loop.cwd()
 end
 
 function M.go()
-    return M.find({
+    return find({
         "go.mod",
         "go.work",
     })
 end
 
 function M.rust()
-    return M.find({
+    return find({
         "Cargo.toml",
     })
 end
 
 function M.python()
-    return M.find({
+    return find({
         "pyproject.toml",
         "requirements.txt",
         ".venv",

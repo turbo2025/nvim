@@ -1,23 +1,24 @@
 --------------------------------------------------------
+-- Runner
+--------------------------------------------------------
+local M = {}
+--------------------------------------------------------
 -- Imports
 --------------------------------------------------------
-
 local terminal = require("core.terminal")
-
 --------------------------------------------------------
 -- State
 --------------------------------------------------------
-
-local M = {}
-
-M.last_cmd = nil
-
+M.last = nil
 --------------------------------------------------------
--- Public
+-- Run
 --------------------------------------------------------
-
 ---@param cmd string[]
----@param opts? table
+---@param opts? {
+---    save?: boolean,
+---    mode?: "terminal"|"background",
+---    cwd?: string,
+---}
 function M.run(cmd, opts)
     opts = vim.tbl_deep_extend("force", {
         save = true,
@@ -27,29 +28,35 @@ function M.run(cmd, opts)
     if opts.save and vim.bo.modified then
         vim.cmd("write")
     end
-    M.last_cmd = {
+    M.last = {
         cmd = vim.deepcopy(cmd),
         opts = vim.deepcopy(opts),
     }
     if opts.mode == "terminal" then
-        terminal.run(cmd, opts)
+        terminal.run(cmd, {
+            cwd = opts.cwd,
+        })
         return
     end
     if opts.mode == "background" then
         vim.system(cmd, {
             cwd = opts.cwd,
+            detach = true,
         })
         return
     end
-    error("Unsupported runner mode: " .. opts.mode)
+    error("Unsupported runner mode: " .. tostring(opts.mode))
 end
 
+--------------------------------------------------------
+-- Run Last
+--------------------------------------------------------
 function M.run_last()
-    if not M.last_cmd then
+    if not M.last then
         vim.notify("No previous command", vim.log.levels.WARN)
         return
     end
-    M.run(M.last_cmd.cmd, M.last_cmd.opts)
+    M.run(M.last.cmd, M.last.opts)
 end
 
 return M
