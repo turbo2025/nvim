@@ -49,6 +49,20 @@ return {
                 -- 查看当前行 Blame
                 desc = "Blame Line",
             },
+            {
+                "<leader>gc",
+                function()
+                    require("fzf-lua").git_commits()
+                end,
+                desc = "Git Commits",
+            },
+            {
+                "<leader>gs",
+                function()
+                    require("fzf-lua").git_status()
+                end,
+                desc = "Git Status",
+            },
         },
     },
 }

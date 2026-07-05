@@ -6,6 +6,9 @@ return {
             "nvim-tree/nvim-web-devicons",
         },
         keys = {
+            ------------------------------------------------------------------
+            -- Find
+            ------------------------------------------------------------------
             {
                 "<leader>ff",
                 function()
@@ -19,6 +22,13 @@ return {
                     require("fzf-lua").live_grep()
                 end,
                 desc = "Live Grep",
+            },
+            {
+                "<leader>fw",
+                function()
+                    require("fzf-lua").grep_cword()
+                end,
+                desc = "Current Word",
             },
             {
                 "<leader>fb",
@@ -39,53 +49,50 @@ return {
                 function()
                     require("fzf-lua").help_tags()
                 end,
-                desc = "Help",
+                desc = "Help Tags",
             },
             {
-                "<leader>gc",
+                "<leader>fk",
                 function()
-                    require("fzf-lua").git_commits()
+                    require("fzf-lua").keymaps()
                 end,
-                desc = "Git Commits",
+                desc = "Keymaps",
             },
             {
-                "<leader>gs",
+                "<leader>fc",
                 function()
-                    require("fzf-lua").git_status()
+                    require("fzf-lua").commands()
                 end,
-                desc = "Git Status",
+                desc = "Commands",
             },
             {
-                "<leader>sd",
+                "<leader>fm",
                 function()
-                    require("fzf-lua").lsp_document_symbols()
+                    require("fzf-lua").marks()
                 end,
-                desc = "Document Symbols",
+                desc = "Marks",
             },
             {
-                "<leader>sw",
+                "<leader>f.",
                 function()
-                    require("fzf-lua").lsp_workspace_symbols()
+                    require("fzf-lua").resume()
                 end,
-                desc = "Workspace Symbols",
-            },
-            {
-                "<leader>fs",
-                function()
-                    require("fzf-lua").lsp_document_symbols()
-                end,
-                desc = "Symbols",
-            },
-            {
-                "<leader>fw",
-                function()
-                    require("fzf-lua").grep_cword()
-                end,
-                desc = "Word",
+                desc = "Resume Last Search",
             },
         },
         opts = {
-            "ivy",
+            winopts = {
+                height = 0.90,
+                width = 0.90,
+                preview = {
+                    layout = "vertical",
+                    vertical = "right:55%",
+                },
+            },
+            fzf_opts = {
+                ["--layout"] = "reverse",
+                ["--info"] = "inline",
+            },
         },
     },
 }
