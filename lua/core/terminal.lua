@@ -1,50 +1,60 @@
+--------------------------------------------------------
+-- State
+--------------------------------------------------------
+
 local M = {}
+
 local state = {
-    buf = nil,
     win = nil,
-    job = nil,
+    buf = nil,
     height = 15,
 }
-local function valid()
-    return state.buf
-        and vim.api.nvim_buf_is_valid(state.buf)
-        and state.win
-        and vim.api.nvim_win_is_valid(state.win)
-end
-function M.open()
-    if valid() then
+
+--------------------------------------------------------
+-- Private
+--------------------------------------------------------
+
+local function open_window()
+    if state.win and vim.api.nvim_win_is_valid(state.win) then
         vim.api.nvim_set_current_win(state.win)
-        vim.cmd("startinsert")
         return
     end
     vim.cmd("botright " .. state.height .. "split")
-    vim.cmd("terminal")
-    state.buf = vim.api.nvim_get_current_buf()
     state.win = vim.api.nvim_get_current_win()
-    state.job = vim.b.terminal_job_id
+end
+
+--------------------------------------------------------
+-- Public
+--------------------------------------------------------
+
+---@param cmd string[]
+---@param opts? { cwd?: string }
+function M.run(cmd, opts)
+    opts = opts or {}
+    open_window()
+    -- 每次重新创建 terminal buffer，保证环境干净
+    vim.cmd("enew")
+    state.buf = vim.api.nvim_get_current_buf()
+    vim.fn.termopen(cmd, {
+        cwd = opts.cwd,
+    })
     vim.cmd("startinsert")
 end
 
 function M.close()
-    if valid() then
+    if state.win and vim.api.nvim_win_is_valid(state.win) then
         vim.api.nvim_win_close(state.win, true)
         state.win = nil
+        state.buf = nil
     end
 end
 
 function M.toggle()
-    if valid() then
+    if state.win and vim.api.nvim_win_is_valid(state.win) then
         M.close()
     else
-        M.open()
+        open_window()
     end
-end
-
-function M.run(cmd)
-    M.open()
-    vim.fn.chansend(state.job, "clear\n")
-    vim.fn.chansend(state.job, table.concat(cmd, " ") .. "\n")
-    vim.cmd("startinsert")
 end
 
 return M

@@ -4,6 +4,7 @@ return {
             cargo = {
                 allFeatures = true,
             },
+            checkOnSave = true,
         },
     },
 }
