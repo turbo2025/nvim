@@ -5,11 +5,18 @@ return {
         opts = {},
     },
     {
+        "echasnovski/mini.surround",
+        event = "VeryLazy",
+        opts = {},
+    },
+    {
+        "echasnovski/mini.ai",
+        event = "VeryLazy",
+        opts = {},
+    },
+    {
         "HiPhish/rainbow-delimiters.nvim",
-        event = {
-            "BufReadPost",
-            "BufNewFile",
-        },
+        lazy = false,
     },
     {
         "folke/todo-comments.nvim",

@@ -54,9 +54,39 @@ return {
         },
     },
     {
+        "akinsho/bufferline.nvim",
+        version = "*",
+        event = "VeryLazy",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        keys = {
+            {
+                "[b",
+                "<cmd>BufferLineCyclePrev<cr>",
+                desc = "Prev Buffer",
+            },
+            {
+                "]b",
+                "<cmd>BufferLineCycleNext<cr>",
+                desc = "Next Buffer",
+            },
+        },
+        opts = {},
+    },
+    {
         "folke/snacks.nvim",
         priority = 1000,
         lazy = false,
+        keys = {
+            {
+                "<leader>e",
+                function()
+                    require("snacks").explorer()
+                end,
+                desc = "File Explorer",
+            },
+        },
         opts = {
             dashboard = {
                 enabled = true,
@@ -66,6 +96,24 @@ return {
             },
             input = {
                 enabled = true,
+            },
+            explorer = {
+                enabled = true,
+            },
+            indent = {
+                enabled = true,
+                indent = {
+                    hl = {
+                        "SnacksIndent1",
+                        "SnacksIndent2",
+                        "SnacksIndent3",
+                        "SnacksIndent4",
+                        "SnacksIndent5",
+                        "SnacksIndent6",
+                        "SnacksIndent7",
+                        "SnacksIndent8",
+                    },
+                },
             },
         },
     },
