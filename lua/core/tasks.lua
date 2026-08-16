@@ -1,9 +1,7 @@
 --------------------------------------------------------
--- Imports
---------------------------------------------------------
-local runner = require("core.runner")
---------------------------------------------------------
--- State
+-- Tasks
+-- 语言模块通过 `tasks.register("<lang>:<name>", fn)` 注册任务，
+-- `core.project` 等按 filetype 分发到这些任务。
 --------------------------------------------------------
 local M = {}
 local registry = {}
@@ -11,9 +9,9 @@ local registry = {}
 -- Public
 --------------------------------------------------------
 ---@param name string
----@param task table
-function M.register(name, task)
-    registry[name] = task
+---@param fn fun(opts?: table)
+function M.register(name, fn)
+    registry[name] = fn
 end
 
 ---@param name string
@@ -27,14 +25,7 @@ function M.run(name, opts)
         )
         return
     end
-    runner.run(
-        task.cmd,
-        vim.tbl_deep_extend(
-            "force",
-            task,
-            opts or {}
-        )
-    )
+    task(opts)
 end
 
 return M

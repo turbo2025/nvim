@@ -34,12 +34,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("<leader>ca", vim.lsp.buf.code_action, "Code Action")
         map("<leader>cr", vim.lsp.buf.rename, "Rename")
         map("<leader>cd", vim.diagnostic.open_float, "Line Diagnostics")
-        map("<leader>cf", function()
-            require("conform").format({
-                async = true,
-                lsp_format = "fallback",
-            })
-        end, "Format")
         --------------------------------------------------------
         -- Symbols
         --------------------------------------------------------
@@ -49,19 +43,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("<leader>cw", function()
             require("fzf-lua").lsp_workspace_symbols()
         end, "Workspace Symbols")
-        --------------------------------------------------------
-        -- Go
-        --------------------------------------------------------
-        map("<leader>ci", function()
-            vim.lsp.buf.code_action({
-                apply = true,
-                context = {
-                    only = {
-                        "source.organizeImports",
-                    },
-                },
-            })
-        end, "Organize Imports")
         --------------------------------------------------------
         -- Diagnostics
         --------------------------------------------------------

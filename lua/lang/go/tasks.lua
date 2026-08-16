@@ -141,4 +141,11 @@ function M.generate()
     })
 end
 
+--------------------------------------------------------
+-- Register Project Tasks
+--------------------------------------------------------
+local tasks = require("core.tasks")
+tasks.register("go:run", M.run)
+tasks.register("go:test", M.test_all)
+
 return M

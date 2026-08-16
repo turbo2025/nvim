@@ -12,13 +12,14 @@ return {
             ------------------------------------------------------------------
             -- Inline Blame
             ------------------------------------------------------------------
-            current_line_blame = false,
+            current_line_blame = true,
             current_line_blame_opts = {
                 delay = 300,
                 virt_text = true,
                 virt_text_pos = "eol",
                 ignore_whitespace = false,
             },
+            current_line_blame_formatter = "  <author>, <author_time:%Y-%m-%d %H:%M> • <summary> • <abbrev_sha>",
             ------------------------------------------------------------------
             -- Preview
             ------------------------------------------------------------------

@@ -1,25 +1,27 @@
 --------------------------------------------------------
--- Core
+-- Imports
 --------------------------------------------------------
-require("core.options")
-require("core.keymaps")
-require("core.autocmd")
-require("core.ui")
+local web = require("lang.web.tasks")
 --------------------------------------------------------
--- Plugins
+-- Helpers
 --------------------------------------------------------
-require("core.lazy")
+local function buf_map(lhs, rhs, desc)
+    vim.keymap.set("n", lhs, rhs, {
+        buffer = 0,
+        desc = desc,
+    })
+end
 --------------------------------------------------------
--- LSP
+-- Run / Build
 --------------------------------------------------------
-require("core.lsp")
-require("core.debug")
+buf_map("<leader>rr", web.run_dev, "Run Dev")
+buf_map("<leader>rb", web.build, "Build")
 --------------------------------------------------------
--- Runtime
+-- Test / Lint
 --------------------------------------------------------
-require("core.runner")
-require("core.terminal")
+buf_map("<leader>tt", web.test, "Test")
+buf_map("<leader>rl", web.lint, "Lint")
 --------------------------------------------------------
--- Languages (lazy by filetype)
+-- Install
 --------------------------------------------------------
-require("core.langs")
+buf_map("<leader>ri", web.install, "Install Dependencies")

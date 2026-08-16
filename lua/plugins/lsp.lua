@@ -24,6 +24,11 @@ return {
                 "basedpyright",
                 require("lsp.basedpyright")
             )
+            vim.lsp.config("ts_ls", require("lsp.ts_ls"))
+            vim.lsp.config("eslint", require("lsp.eslint"))
+            vim.lsp.config("html", require("lsp.html"))
+            vim.lsp.config("cssls", require("lsp.cssls"))
+            vim.lsp.config("volar", require("lsp.volar"))
             --------------------------------------------------------
             -- Enable
             --------------------------------------------------------
@@ -32,6 +37,11 @@ return {
                 "gopls",
                 "rust_analyzer",
                 "basedpyright",
+                "ts_ls",
+                "eslint",
+                "html",
+                "cssls",
+                "volar",
             })
         end,
     },

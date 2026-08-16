@@ -1,69 +1,63 @@
 --------------------------------------------------------
 -- Imports
 --------------------------------------------------------
-local map = vim.keymap.set
 local go = require("lang.go.tasks")
 local debug = require("lang.go.dap")
 --------------------------------------------------------
+-- Helpers
+--------------------------------------------------------
+local function buf_map(lhs, rhs, desc)
+    vim.keymap.set("n", lhs, rhs, {
+        buffer = 0,
+        desc = desc,
+    })
+end
+--------------------------------------------------------
+-- Indent (gofmt uses tabs)
+--------------------------------------------------------
+vim.bo.expandtab = false
+--------------------------------------------------------
 -- Run
 --------------------------------------------------------
-map("n", "<leader>rr", go.run, {
-    desc = "Go Run",
-})
-map("n", "<leader>rb", go.build, {
-    desc = "Go Build",
-})
+buf_map("<leader>rr", go.run, "Go Run")
+buf_map("<leader>rb", go.build, "Go Build")
 --------------------------------------------------------
 -- Test
 --------------------------------------------------------
-map("n", "<leader>tt", go.test_package, {
-    desc = "Go Test Package",
-})
-map("n", "<leader>ta", go.test_all, {
-    desc = "Go Test All Packages",
-})
-map("n", "<leader>tf", go.test_function, {
-    desc = "Go Test Current Function",
-})
-map("n", "<leader>tl", go.test_last, {
-    desc = "Go Test Last Function",
-})
+buf_map("<leader>tt", go.test_package, "Go Test Package")
+buf_map("<leader>ta", go.test_all, "Go Test All Packages")
+buf_map("<leader>tf", go.test_function, "Go Test Current Function")
+buf_map("<leader>tl", go.test_last, "Go Test Last Function")
 --------------------------------------------------------
 -- Benchmark
 --------------------------------------------------------
-map("n", "<leader>tb", go.benchmark_current, {
-    desc = "Go Benchmark Current",
-})
-map("n", "<leader>tB", go.benchmark_package, {
-    desc = "Go Benchmark Package",
-})
+buf_map("<leader>tb", go.benchmark_current, "Go Benchmark Current")
+buf_map("<leader>tB", go.benchmark_package, "Go Benchmark Package")
 --------------------------------------------------------
 -- Coverage
 --------------------------------------------------------
-map("n", "<leader>tc", go.coverage, {
-    desc = "Go Coverage",
-})
+buf_map("<leader>tc", go.coverage, "Go Coverage")
 --------------------------------------------------------
 -- Go Modules
 --------------------------------------------------------
-map("n", "<leader>mt", go.tidy, {
-    desc = "Go Mod Tidy",
-})
-map("n", "<leader>mg", go.generate, {
-    desc = "Go Generate",
-})
+buf_map("<leader>mt", go.tidy, "Go Mod Tidy")
+buf_map("<leader>mg", go.generate, "Go Generate")
+--------------------------------------------------------
+-- Organize Imports
+--------------------------------------------------------
+buf_map("<leader>ci", function()
+    vim.lsp.buf.code_action({
+        apply = true,
+        context = {
+            only = {
+                "source.organizeImports",
+            },
+        },
+    })
+end, "Organize Imports")
 --------------------------------------------------------
 -- Debug
 --------------------------------------------------------
-map("n", "<leader>dt", debug.debug_current_test, {
-    desc = "Debug Current Test",
-})
-map("n", "<leader>dp", debug.debug_package, {
-    desc = "Debug Package",
-})
-map("n", "<leader>dm", debug.debug_main, {
-    desc = "Debug Main",
-})
-map("n", "<leader>dl", debug.debug_last, {
-    desc = "Debug Last",
-})
+buf_map("<leader>dt", debug.debug_current_test, "Debug Current Test")
+buf_map("<leader>dp", debug.debug_package, "Debug Package")
+buf_map("<leader>dm", debug.debug_main, "Debug Main")
