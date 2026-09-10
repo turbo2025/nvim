@@ -1,7 +1,7 @@
 return {
     {
         "mason-org/mason.nvim",
-        cmd = "Mason",
+        lazy = false,
         opts = {},
     },
     {
@@ -28,7 +28,7 @@ return {
             vim.lsp.config("eslint", require("lsp.eslint"))
             vim.lsp.config("html", require("lsp.html"))
             vim.lsp.config("cssls", require("lsp.cssls"))
-            vim.lsp.config("volar", require("lsp.volar"))
+            vim.lsp.config("vue_ls", require("lsp.vue_ls"))
             --------------------------------------------------------
             -- Enable
             --------------------------------------------------------
@@ -41,7 +41,7 @@ return {
                 "eslint",
                 "html",
                 "cssls",
-                "volar",
+                "vue_ls",
             })
         end,
     },

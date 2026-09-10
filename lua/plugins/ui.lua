@@ -87,6 +87,7 @@ return {
                 desc = "File Explorer",
             },
         },
+        ---@type snacks.Config
         opts = {
             dashboard = {
                 enabled = true,
