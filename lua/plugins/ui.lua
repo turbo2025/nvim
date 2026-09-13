@@ -126,6 +126,9 @@ return {
 		opts = {
 			style = "moon",
 			transparent = false,
+			on_highlights = function(hl, c)
+				hl.WinSeparator = { fg = c.blue, bold = true }
+			end,
 		},
 		config = function(_, opts)
 			require("tokyonight").setup(opts)
