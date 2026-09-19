@@ -27,7 +27,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- Hover
         --------------------------------------------------------
         map("K", vim.lsp.buf.hover, "Hover")
-        map("<C-k>", vim.lsp.buf.signature_help, "Signature Help")
+        -- insert 模式的 <C-k> 不用在这里绑：blink.cmp 的 super-tab 预设
+        -- 自己就把 <C-k> 绑成了 show_signature/hide_signature（见
+        -- lua/plugins/blink.lua 的 signature.enabled = true），跟这里手动
+        -- 绑 vim.lsp.buf.signature_help 撞同一个 buffer-local 按键，谁后
+        -- 设置生效谁赢，两边打架。交给 blink.cmp 自己管，这里不重复绑。
         --------------------------------------------------------
         -- Code
         --------------------------------------------------------

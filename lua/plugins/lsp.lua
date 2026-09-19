@@ -12,18 +12,20 @@ return {
         },
         config = function()
             --------------------------------------------------------
-            -- Tell servers we can act on workspace/willRenameFiles
-            -- (needed for snacks.rename to sync import paths on rename)
+            -- Capabilities: workspace/willRenameFiles (snacks.rename sync)
+            -- + blink.cmp's own capabilities. blink.cmp was never wired
+            -- into any server's capabilities before, which it needs for
+            -- completion/signature-help related extensions to work fully.
             --------------------------------------------------------
             vim.lsp.config("*", {
-                capabilities = {
+                capabilities = vim.tbl_deep_extend("force", {
                     workspace = {
                         fileOperations = {
                             willRename = true,
                             didRename = true,
                         },
                     },
-                },
+                }, require("blink.cmp").get_lsp_capabilities()),
             })
             --------------------------------------------------------
             -- Server Config
