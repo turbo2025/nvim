@@ -5,6 +5,7 @@ return {
             staticcheck = true,
             completeUnimported = true,
             usePlaceholders = true,
+            renameMovesSubpackages = true,
             analyses = {
                 unusedparams = true,
                 unusedwrite = true,

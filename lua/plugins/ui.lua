@@ -118,6 +118,41 @@ return {
 				},
 			},
 		},
+		config = function(_, opts)
+			require("snacks").setup(opts)
+			-- snacks.rename hardcodes a 1s request_sync timeout for
+			-- workspace/willRenameFiles; gopls needs much longer to
+			-- rewrite imports across a real project, so it silently
+			-- times out and cancels. Bump it way up.
+			local rename = require("snacks.rename")
+			function rename.on_rename_file(from, to, cb)
+				local changes = {
+					files = {
+						{
+							oldUri = vim.uri_from_fname(from),
+							newUri = vim.uri_from_fname(to),
+						},
+					},
+				}
+				local clients = (vim.lsp.get_clients or vim.lsp.get_active_clients)()
+				for _, client in ipairs(clients) do
+					if client.supports_method("workspace/willRenameFiles") then
+						local resp = client.request_sync("workspace/willRenameFiles", changes, 30000, 0)
+						if resp and resp.result ~= nil then
+							vim.lsp.util.apply_workspace_edit(resp.result, client.offset_encoding)
+						end
+					end
+				end
+				if cb then
+					cb()
+				end
+				for _, client in ipairs(clients) do
+					if client.supports_method("workspace/didRenameFiles") then
+						client.notify("workspace/didRenameFiles", changes)
+					end
+				end
+			end
+		end,
 	},
 	{
 		"folke/tokyonight.nvim",

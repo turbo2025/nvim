@@ -12,6 +12,20 @@ return {
         },
         config = function()
             --------------------------------------------------------
+            -- Tell servers we can act on workspace/willRenameFiles
+            -- (needed for snacks.rename to sync import paths on rename)
+            --------------------------------------------------------
+            vim.lsp.config("*", {
+                capabilities = {
+                    workspace = {
+                        fileOperations = {
+                            willRename = true,
+                            didRename = true,
+                        },
+                    },
+                },
+            })
+            --------------------------------------------------------
             -- Server Config
             --------------------------------------------------------
             vim.lsp.config("lua_ls", require("lsp.lua_ls"))
