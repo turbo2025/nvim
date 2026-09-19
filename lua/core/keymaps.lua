@@ -31,6 +31,12 @@ map("n", "]t", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader>Tn", "<cmd>tabnew<cr>", { desc = "New Tab" })
 map("n", "<leader>Tc", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 --------------------------------------------------------
+-- Movement (screen line, not logical line — matters with wrap)
+-- keeps relativenumber counts (5j/3k) jumping by logical line
+--------------------------------------------------------
+map({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+map({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+--------------------------------------------------------
 -- Clear Highlight
 --------------------------------------------------------
 map("n", "<Esc>", "<cmd>noh<cr>")
