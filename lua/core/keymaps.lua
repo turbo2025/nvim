@@ -7,6 +7,7 @@ vim.keymap.set("n", "<leader>ot", terminal.toggle, {
 -- Save / Quit
 --------------------------------------------------------
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Write" })
+map("n", "<leader>W", "<cmd>wa<cr>", { desc = "Write All" })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 --------------------------------------------------------
 -- Buffer
