@@ -7,6 +7,7 @@ return {
 			local wk = require("which-key")
 			wk.setup(opts)
 			wk.add({
+				{ "<leader>a", group = "AI" },
 				{ "<leader>b", group = "Buffer" },
 				{ "<leader>c", group = "Code" },
 				{ "<leader>f", group = "Find" },

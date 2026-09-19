@@ -12,6 +12,16 @@ map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 -- Buffer
 --------------------------------------------------------
 map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
+map("n", "<leader>bp", function()
+    local path = vim.fn.expand("%:p")
+    vim.fn.setreg("+", path)
+    vim.notify("Copied: " .. path)
+end, { desc = "Copy Absolute Path" })
+map("n", "<leader>bP", function()
+    local path = vim.fn.expand("%:.")
+    vim.fn.setreg("+", path)
+    vim.notify("Copied: " .. path)
+end, { desc = "Copy Relative Path" })
 --------------------------------------------------------
 -- Window
 --------------------------------------------------------
