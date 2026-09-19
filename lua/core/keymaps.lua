@@ -13,6 +13,8 @@ map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 -- Buffer
 --------------------------------------------------------
 map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
+map("n", "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", { desc = "Close Other Buffers" })
+map("n", "<leader>bD", "<cmd>%bdelete|edit#|bdelete#<cr>", { desc = "Close All Buffers" })
 map("n", "<leader>bp", function()
     local path = vim.fn.expand("%:p")
     vim.fn.setreg("+", path)
@@ -41,6 +43,7 @@ map("n", "[t", "<cmd>tabprevious<cr>", { desc = "Prev Tab" })
 map("n", "]t", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader>Tn", "<cmd>tabnew<cr>", { desc = "New Tab" })
 map("n", "<leader>Tc", "<cmd>tabclose<cr>", { desc = "Close Tab" })
+map("n", "<leader>To", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
 --------------------------------------------------------
 -- Movement (screen line, not logical line — matters with wrap)
 -- keeps relativenumber counts (5j/3k) jumping by logical line
