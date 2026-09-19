@@ -27,3 +27,4 @@ vim.opt.sidescrolloff = 8
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevelstart = 99 -- open all folds by default
+vim.opt.foldcolumn = "1" -- show the fold indicator gutter (default "0" hides it)
