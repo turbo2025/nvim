@@ -53,6 +53,7 @@ npm i -g prettier                                  # 格式化
 npm i -g eslint_d                                  # lint（js/ts/vue）
 npm i -g stylelint                                 # lint（css/scss）
 npm i -g @vue/language-server                       # vue（volar，可选）
+# 调试：js-debug-adapter 由 mason 安装（:MasonInstall js-debug-adapter）
 ```
 
 ## 常用快捷键
