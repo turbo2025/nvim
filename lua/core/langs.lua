@@ -7,6 +7,7 @@ local group = vim.api.nvim_create_augroup("Langs", { clear = true })
 
 local langs = {
     go = "lang.go",
+    python = "lang.python",
     rust = "lang.rust",
     --------------------------------------------------------
     -- Web

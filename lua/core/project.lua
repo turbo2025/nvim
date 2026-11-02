@@ -6,6 +6,7 @@ local task = require("core.tasks")
 --------------------------------------------------------
 local filetype_tasks = {
     go = { run = "go:run", test = "go:test" },
+    python = { run = "python:run", test = "python:test" },
     rust = { run = "rust:run", test = "rust:test" },
     javascript = { run = "web:run", test = "web:test" },
     javascriptreact = { run = "web:run", test = "web:test" },

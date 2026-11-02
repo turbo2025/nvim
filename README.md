@@ -42,6 +42,7 @@ brew install codelldb   # macOS；Linux 见 https://github.com/vadimcn/codelldb
 ```sh
 # basedpyright（LSP）+ ruff（format / lint）
 uv tool install basedpyright ruff    # 或使用 pipx
+# 调试：debugpy 无需手动安装，由 `uv run --with debugpy` 按需拉起
 ```
 
 ### 前端
