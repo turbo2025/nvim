@@ -1,7 +1,8 @@
 --------------------------------------------------------
 -- Tasks
--- 语言模块通过 `tasks.register("<lang>:<name>", fn)` 注册任务，
--- `core.project` 等按 filetype 分发到这些任务。
+-- 语言模块通过 `tasks.register("<lang>:<name>", fn)` 注册任务。
+-- 当前 buffer-local keymap 直接调用语言模块函数，注册表保留给后续的
+-- 全局入口或任务选择器使用。
 --------------------------------------------------------
 local M = {}
 local registry = {}

@@ -114,28 +114,30 @@ return {
         },
     },
     ----------------------------------------------------------------------
-    -- DiffView
+    -- CodeDiff
     ----------------------------------------------------------------------
     {
-        "sindrets/diffview.nvim",
-        cmd = {
-            "DiffviewOpen",
-            "DiffviewFileHistory",
-        },
+        "esmuellert/codediff.nvim",
+        cmd = "CodeDiff",
         keys = {
             {
                 "<leader>gd",
-                "<cmd>DiffviewOpen<CR>",
-                desc = "Git Diff",
+                "<cmd>CodeDiff<CR>",
+                desc = "Git Diff (Working Tree)",
+            },
+            {
+                "<leader>gD",
+                "<cmd>CodeDiff --staged<CR>",
+                desc = "Git Diff (Staged)",
             },
             {
                 "<leader>gh",
-                "<cmd>DiffviewFileHistory %<CR>",
+                "<cmd>CodeDiff history %<CR>",
                 desc = "Current File History",
             },
             {
                 "<leader>gH",
-                "<cmd>DiffviewFileHistory<CR>",
+                "<cmd>CodeDiff history<CR>",
                 desc = "Repository History",
             },
         },

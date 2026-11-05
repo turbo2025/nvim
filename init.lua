@@ -5,6 +5,9 @@ require("core.options")
 require("core.keymaps")
 require("core.autocmd")
 require("core.ui")
+-- 必须在 lazy 加载 LSP 插件之前注册 BufReadPre，
+-- 这样首个文件启动 LSP 时已经拿到项目 PATH。
+require("core.direnv")
 --------------------------------------------------------
 -- Plugins
 --------------------------------------------------------

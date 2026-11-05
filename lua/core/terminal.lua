@@ -46,9 +46,12 @@ function M.run(cmd, opts)
     M.open()
     vim.fn.chansend(state.job, "clear\n")
     if opts.cwd then
-        vim.fn.chansend(state.job, ("cd %q\n"):format(opts.cwd))
+        -- shellescape, not %q: %q 是 Lua 字符串转义，路径里的 $ 等仍会被 shell 展开
+        vim.fn.chansend(state.job, "cd " .. vim.fn.shellescape(opts.cwd) .. "\n")
     end
-    vim.fn.chansend(state.job, table.concat(cmd, " ") .. "\n")
+    -- cmd 是 argv 数组，逐项转义后再拼给交互式 shell
+    local escaped = vim.tbl_map(vim.fn.shellescape, cmd)
+    vim.fn.chansend(state.job, table.concat(escaped, " ") .. "\n")
     vim.cmd("startinsert")
 end
 

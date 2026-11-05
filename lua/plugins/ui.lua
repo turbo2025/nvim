@@ -10,11 +10,19 @@ return {
 				{ "<leader>a", group = "AI" },
 				{ "<leader>b", group = "Buffer" },
 				{ "<leader>c", group = "Code" },
+				{ "<leader>d", group = "Debug" },
 				{ "<leader>f", group = "Find" },
 				{ "<leader>g", group = "Git" },
+				{ "<leader>h", group = "Hunk" },
+				{ "<leader>m", group = "Go Mod" },
+				{ "<leader>o", group = "Terminal" },
+				{ "<leader>q", group = "Session / Quit" },
+				{ "<leader>r", group = "Run" },
 				{ "<leader>s", group = "Search" },
-				{ "<leader>t", group = "Toggle" },
-				{ "<leader>w", group = "Window" },
+				{ "<leader>t", group = "Test" },
+				{ "<leader>T", group = "Tab" },
+				{ "<leader>w", group = "Window / Write" },
+				{ "<leader>x", group = "Trouble" },
 			})
 		end,
 	},
@@ -121,6 +129,9 @@ return {
 		},
 		config = function(_, opts)
 			require("snacks").setup(opts)
+			-- snacks.input 不会自动接管 vim.ui.input；显式启用，
+			-- 否则 LSP rename / DAP 条件断点等仍走默认输入框。
+			Snacks.input.enable()
 			-- snacks.rename hardcodes a 1s request_sync timeout for
 			-- workspace/willRenameFiles; gopls needs much longer to
 			-- rewrite imports across a real project, so it silently

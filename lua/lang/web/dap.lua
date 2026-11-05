@@ -12,7 +12,10 @@ local root = require("core.root")
 --------------------------------------------------------
 -- Adapter
 --------------------------------------------------------
-local js_debug = vim.fn.stdpath("data") .. "/mason/bin/js-debug-adapter"
+local js_debug = vim.fn.exepath("js-debug-adapter")
+if js_debug == "" then
+    js_debug = vim.fn.stdpath("data") .. "/mason/bin/js-debug-adapter"
+end
 
 local function make_adapter()
     return {
