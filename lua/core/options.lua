@@ -14,6 +14,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.clipboard = "unnamedplus"
+-- 'mouse' / 鼠标拖选行为在 core/mouse.lua 里设置
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
