@@ -28,6 +28,28 @@ local function snacks()
 	return require("snacks")
 end
 
+local function is_picker_win(win)
+	if not vim.api.nvim_win_is_valid(win) then
+		return false
+	end
+	local ft = vim.bo[vim.api.nvim_win_get_buf(win)].filetype
+	return vim.startswith(ft, "snacks_picker") or ft == "snacks_layout_box"
+end
+
+-- 把焦点还给普通文件窗口：优先原来那个，否则当前 tab 里第一个
+local function focus_back(win)
+	if vim.api.nvim_win_is_valid(win) and not is_picker_win(win) then
+		pcall(vim.api.nvim_set_current_win, win)
+		return
+	end
+	for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+		if not is_picker_win(w) then
+			pcall(vim.api.nvim_set_current_win, w)
+			return
+		end
+	end
+end
+
 local function should_open()
 	-- 还没进 UI（--headless、启动早期）就别插手
 	if vim.v.vim_did_enter == 0 then
@@ -71,9 +93,12 @@ local function ensure()
 
 	vim.defer_fn(function()
 		pending = false
-		-- picker 的布局在打开后才稳定，等一会儿再确认焦点位置
-		if win ~= vim.api.nvim_get_current_win() and vim.api.nvim_win_is_valid(win) then
-			pcall(vim.api.nvim_set_current_win, win)
+		-- 恢复 session 时侧栏是在启动流程里建起来的，picker 的子窗口
+		-- 可能把当前窗口抢走（那样按 <leader> 会落进 picker 的输入框/
+		-- list 里，看起来像快捷键没反应）。只在当前窗口确实是 picker
+		-- 时才把焦点还回去，不打断用户自己切过去的操作。
+		if is_picker_win(vim.api.nvim_get_current_win()) then
+			focus_back(win)
 		end
 	end, 300)
 end
@@ -85,7 +110,10 @@ function M.setup()
 	vim.api.nvim_create_autocmd({ "VimEnter", "TabEnter", "BufEnter" }, {
 		group = group,
 		callback = function()
-			vim.schedule(ensure)
+			-- 先让 lazy 的 VeryLazy（which-key 等）跑完：恢复 session 时
+			-- 同步建侧栏会挤在启动流程中间，which-key 迟迟不加载，
+			-- 表现为恢复后第一次按 <leader> 弹不出菜单。
+			vim.defer_fn(ensure, 80)
 		end,
 	})
 end

@@ -1,7 +1,10 @@
 return {
 	{
 		"folke/which-key.nvim",
-		event = "VeryLazy",
+		-- 恢复 session 时启动流程会把 VeryLazy 推到很后面，
+		-- 表现为刚恢复完第一次按 <leader> 弹不出菜单。which-key
+		-- 很轻，直接常驻加载，保证启动后立刻可用。
+		lazy = false,
 		opts = {},
 		config = function(_, opts)
 			local wk = require("which-key")
