@@ -5,9 +5,8 @@ return {
         config = function(_, opts)
             -- 装的这版 persistence.nvim 已经不认 opts.options 这个字段了
             -- （源码里根本没有处理它的代码，之前那份配置是死配置，白写），
-            -- sessionoptions 得自己设。必须带上 "globals"，不然
-            -- g:SnacksExplorerWasOpen 这种标记压根不会被 :mksession 写进
-            -- 会话文件，下面重新打开 explorer 的逻辑就永远读不到它。
+            -- sessionoptions 得自己设。globals 保留着，其它 g: 变量
+            -- 才不会在会话里丢掉。
             vim.opt.sessionoptions = {
                 "buffers",
                 "curdir",
@@ -43,8 +42,6 @@ return {
             vim.api.nvim_create_autocmd("User", {
                 pattern = "PersistenceSavePre",
                 callback = function()
-                    local explorer = Snacks.picker.get({ source = "explorer" })[1]
-                    vim.g.SnacksExplorerWasOpen = explorer and 1 or 0
                     for _, win in ipairs(vim.api.nvim_list_wins()) do
                         if #vim.api.nvim_list_wins() <= 1 then
                             break
@@ -59,16 +56,10 @@ return {
                     end
                 end,
             })
-            vim.api.nvim_create_autocmd("User", {
-                pattern = "PersistenceLoadPost",
-                callback = function()
-                    if vim.g.SnacksExplorerWasOpen == 1 then
-                        vim.schedule(function()
-                            Snacks.explorer()
-                        end)
-                    end
-                end,
-            })
+            -- 恢复会话后不再手动重开 explorer：core/explorer.lua 已经在
+            -- source session 触发的 BufEnter 上自动补一个。这里原来还有一段
+            -- PersistenceLoadPost -> Snacks.explorer()，加了自动常驻之后两边
+            -- 各开一个，恢复 session 就并排出现两个侧栏。
         end,
         keys = {
             {

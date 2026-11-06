@@ -91,7 +91,15 @@ return {
 			{
 				"<leader>e",
 				function()
-					require("snacks").explorer()
+					-- 侧栏现在会自动常驻，这里做成 toggle：
+					-- 已打开就关掉，避免重复开第二个 explorer
+					local snacks = require("snacks")
+					local explorer = snacks.picker.get({ source = "explorer" })[1]
+					if explorer then
+						explorer:close()
+					else
+						snacks.explorer()
+					end
 				end,
 				-- https://github.com/folke/snacks.nvim/blob/main/docs/explorer.md
 				desc = "File Explorer",
