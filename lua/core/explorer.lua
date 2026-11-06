@@ -13,6 +13,12 @@ local M = {}
 -- 正在创建侧栏（Snacks.explorer 的注册是异步的，见 ensure）
 local pending = false
 
+-- 刚关过窗口（:q / :close）的时间戳：紧随其后的那次 BufEnter 只是
+-- Neovim 把别的 buffer 塞进窗口，不代表用户“切到了一个文件”，
+-- 此时不要补侧栏，否则连按 :q 会不断把窗口/侧栏复活，永远退不出去。
+local closed_at = 0
+local CLOSE_GRACE_MS = 200
+
 -- 这些 buffer 不该拉出侧栏：提交信息、rebase、dashboard、插件 UI 等
 local skip_ft = {
 	gitcommit = true,
@@ -74,7 +80,15 @@ local function should_open()
 end
 
 local function ensure()
-	if pending or not should_open() then
+	if pending then
+		return
+	end
+	-- 关窗口后的那次 BufEnter 不算“切到文件”：一次 :q 会连着触发
+	-- 好几次 BufEnter，抑制期内一律不补侧栏，否则 :q 会不断复活窗口
+	if closed_at > 0 and vim.uv.now() - closed_at < CLOSE_GRACE_MS then
+		return
+	end
+	if not should_open() then
 		return
 	end
 
@@ -114,6 +128,14 @@ function M.setup()
 			-- 同步建侧栏会挤在启动流程中间，which-key 迟迟不加载，
 			-- 表现为恢复后第一次按 <leader> 弹不出菜单。
 			vim.defer_fn(ensure, 80)
+		end,
+	})
+
+	-- 关窗口后的那次 BufEnter 不算“切到文件”，短时间内不补侧栏
+	vim.api.nvim_create_autocmd("WinClosed", {
+		group = group,
+		callback = function()
+			closed_at = vim.uv.now()
 		end,
 	})
 end
