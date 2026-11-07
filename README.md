@@ -60,9 +60,11 @@ uv tool install basedpyright ruff    # 或使用 pipx
 
 ### Lua（编辑本配置）
 
-```sh
-nix profile install nixpkgs#lua-language-server   # 或 :MasonInstall lua-language-server
+```vim
+:MasonInstall lua-language-server
 ```
+
+也可以改用发行版包管理器安装 `lua-language-server`。
 
 ### 前端
 
@@ -75,11 +77,50 @@ npm i -g prettier                                 # 格式化
 npm i -g eslint_d                                 # lint（js/ts/vue）
 npm i -g stylelint                                # lint（css/scss）
 npm i -g @vue/language-server                     # vue（volar）
-# Vue TS：vtsls 需要 @vue/typescript-plugin；Nix 的 vue-language-server 自带，
-# npm 安装时需在项目或全局另装该插件。
+# Vue TS：vtsls 需要 @vue/typescript-plugin；部分发行版打包的 vue-language-server
+# 已自带，npm 安装时需在项目或全局另装该插件。
 # Svelte 格式化需要项目安装 prettier-plugin-svelte。
 # 调试：js-debug-adapter 由 mason 安装（:MasonInstall js-debug-adapter）
 ```
+
+## AI 助手（DeepSeek）
+
+聊天/改代码用 [avante.nvim](https://github.com/yetone/avante.nvim)，provider 固定为 `deepseek`：
+
+- `<leader>ac` — 打开/聚焦 AI chat 侧栏
+- `<leader>aa` — 显示侧栏
+- `<leader>at` — 显示/隐藏侧栏
+- `<leader>ae` — 编辑选中的代码块
+- 侧栏内 `<Tab>` / `<S-Tab>` 切换窗口，`q` 关闭
+
+API key 从环境变量 `DEEPSEEK_API_KEY` 读取；确保启动 Neovim 的 shell 已导出它。
+默认模型 `deepseek-chat`（当前 API 会把该别名映射到 `deepseek-flash`）；`/models` 目前列出
+`deepseek-flash` 和 `deepseek-v4-pro`，`deepseek-chat` / `deepseek-reasoner` 仍是兼容别名。
+要换更强的模型，在 `lua/plugins/avante.lua` 的 `opts` 里加：
+
+```lua
+providers = {
+    deepseek = { model = "deepseek-v4-pro" },
+},
+```
+
+行内补全仍由 `minuet-ai.nvim` + 本地 Ollama 提供（见 `lua/plugins/minuet.lua`），avante 的
+`auto_suggestions` 默认关闭以免高频计费；需要时把 `behaviour.auto_suggestions` 设为 `true`。
+
+首次启动会执行 `make` 编译 avante 原生依赖，需要 `make` / `cargo` / C 编译器 /
+`curl`（`:AvanteBuild` 下载预编译产物时还需要 `tar`）。用发行版包管理器安装即可，例如：
+
+```sh
+# Debian / Ubuntu
+sudo apt install build-essential cargo curl
+# Fedora
+sudo dnf install gcc make cargo curl
+# Arch
+sudo pacman -S base-devel rust curl
+```
+
+编译失败时可在 Neovim 里执行 `:AvanteBuild source=true` 重试，或执行 `:AvanteBuild`
+下载预编译产物。
 
 ## 常用快捷键
 

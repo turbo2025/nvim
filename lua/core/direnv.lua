@@ -146,7 +146,7 @@ local function apply_project(kind, root)
         restore_base()
         return
     end
-    -- 先回到基线再计算新项目环境，避免上一个项目的 PATH/NIX_* 污染导出
+    -- 先回到基线再计算新项目环境，避免上一个项目的 PATH 等变量污染导出
     restore_base()
     local env = export(kind, root)
     if env then

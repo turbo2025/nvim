@@ -86,7 +86,7 @@ return {
                     ":h:h"
                 )
                 vim.list_extend(vue_candidates, {
-                    -- Nix: vue-language-server 自带 typescript-plugin
+                    -- 部分发行版打包版本的额外目录布局
                     root .. "/lib/language-tools/packages/typescript-plugin",
                     -- npm 全局安装：root 通常就是 @vue/language-server
                     root,
