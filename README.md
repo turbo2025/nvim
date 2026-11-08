@@ -94,15 +94,14 @@ npm i -g @vue/language-server                     # vue（volar）
 - 侧栏内 `<Tab>` / `<S-Tab>` 切换窗口，`q` 关闭
 
 API key 从环境变量 `DEEPSEEK_API_KEY` 读取；确保启动 Neovim 的 shell 已导出它。
-默认模型 `deepseek-chat`（当前 API 会把该别名映射到 `deepseek-flash`）；`/models` 目前列出
-`deepseek-flash` 和 `deepseek-v4-pro`，`deepseek-chat` / `deepseek-reasoner` 仍是兼容别名。
-要换更强的模型，在 `lua/plugins/avante.lua` 的 `opts` 里加：
+当前 API 提供 `deepseek-flash` 和 `deepseek-v4-pro` 两个模型；配置里默认用 `deepseek-flash`，
+要换更强的模型，把 `lua/plugins/avante.lua` 里的 `providers.deepseek.model` 改成
+`deepseek-v4-pro`。
 
-```lua
-providers = {
-    deepseek = { model = "deepseek-v4-pro" },
-},
-```
+`providers.deepseek.extra_request_body.max_tokens` 不能省略：avante 的 openai provider 默认
+会给请求体塞 `max_completion_tokens`，而 DeepSeek 只接受 `max_tokens`，多余字段会返回 400。
+设置 `max_tokens` 后 avante 会自动移除前者。同一位置还设置了 `thinking = { type = "disabled" }`，
+关闭 DeepSeek 默认开启的 thinking 模式以加快响应；需要深度推理时改成 `"enabled"`。
 
 行内补全仍由 `minuet-ai.nvim` + 本地 Ollama 提供（见 `lua/plugins/minuet.lua`），avante 的
 `auto_suggestions` 默认关闭以免高频计费；需要时把 `behaviour.auto_suggestions` 设为 `true`。
