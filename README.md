@@ -83,60 +83,16 @@ npm i -g @vue/language-server                     # vue（volar）
 # 调试：js-debug-adapter 由 mason 安装（:MasonInstall js-debug-adapter）
 ```
 
-## AI 助手（DeepSeek）
+## AI 补全
 
-聊天/改代码用 [avante.nvim](https://github.com/yetone/avante.nvim)，provider 固定为 `deepseek`：
+行内补全由 [minuet-ai.nvim](https://github.com/milanglacier/minuet-ai.nvim) + 本地 Ollama 提供
+（见 `lua/plugins/minuet.lua`），默认只手动触发：
 
-- `<leader>ac` — 打开/聚焦 AI chat 侧栏
-- `<leader>aa` — 显示侧栏
-- `<leader>at` — 显示/隐藏侧栏
-- `<leader>ae` — 编辑选中的代码块
-- 侧栏内 `<Tab>` / `<S-Tab>` 切换窗口，`q` 关闭
+- `<A-[>` / `<A-]>` — 上一条 / 下一条建议（没有建议时手动发起请求）
+- `<A-A>` / `<A-a>` / `<A-z>` — 接受全部 / 接受一行 / 接受 N 行
+- `<A-e>` — 关闭建议
 
-API key 从环境变量 `DEEPSEEK_API_KEY` 读取；确保启动 Neovim 的 shell 已导出它。
-当前 API 提供 `deepseek-flash` 和 `deepseek-v4-pro` 两个模型；配置里默认用 `deepseek-flash`，
-要换更强的模型，把 `lua/plugins/avante.lua` 里的 `providers.deepseek.model` 改成
-`deepseek-v4-pro`。
-
-`providers.deepseek.extra_request_body.max_tokens` 不能省略：avante 的 openai provider 默认
-会给请求体塞 `max_completion_tokens`，而 DeepSeek 只接受 `max_tokens`，多余字段会返回 400。
-设置 `max_tokens` 后 avante 会自动移除前者。同一位置设置了 `thinking = { type = "enabled" }`，
-开启 DeepSeek 的 thinking 模式（effort=high）以提升工具调用参数的正确性；追求响应速度时改成
-`"disabled"`。
-
-除了内置工具，`custom_tools` 还注册了固定命令工具，cwd 自动取项目根目录、
-输出超长会自动截断：
-
-| 工具 | 等价命令 |
-|---|---|
-| `run_go_test` | `go test <target>`（默认 `./...`） |
-| `run_pytest` | 优先 `.venv/bin/pytest` / `uv run pytest` / `pytest`，回退 `python -m pytest` |
-| `run_npm_test` | `npm test`（可选参数经 `--` 传入） |
-| `run_python_script` | 用项目解释器运行 `.py` 文件或内联代码 |
-| `git_status` | `git status --short --branch` |
-| `git_log` | `git log --oneline --decorate -n <count>` |
-| `git_branch` | `git branch -vv` |
-| `git_show` | `git show --stat <ref>` |
-
-`git diff` 和 `git commit` 用 avante 内置的 `git_diff` / `git_commit`（后者执行前会弹确认）。
-
-行内补全仍由 `minuet-ai.nvim` + 本地 Ollama 提供（见 `lua/plugins/minuet.lua`），avante 的
-`auto_suggestions` 默认关闭以免高频计费；需要时把 `behaviour.auto_suggestions` 设为 `true`。
-
-首次启动会执行 `make` 编译 avante 原生依赖，需要 `make` / `cargo` / C 编译器 /
-`curl`（`:AvanteBuild` 下载预编译产物时还需要 `tar`）。用发行版包管理器安装即可，例如：
-
-```sh
-# Debian / Ubuntu
-sudo apt install build-essential cargo curl
-# Fedora
-sudo dnf install gcc make cargo curl
-# Arch
-sudo pacman -S base-devel rust curl
-```
-
-编译失败时可在 Neovim 里执行 `:AvanteBuild source=true` 重试，或执行 `:AvanteBuild`
-下载预编译产物。
+模型 `qwen2.5-coder:1.5b`，endpoint `http://localhost:11434/v1/completions`。
 
 ## 常用快捷键
 
