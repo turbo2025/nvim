@@ -100,8 +100,25 @@ API key 从环境变量 `DEEPSEEK_API_KEY` 读取；确保启动 Neovim 的 shel
 
 `providers.deepseek.extra_request_body.max_tokens` 不能省略：avante 的 openai provider 默认
 会给请求体塞 `max_completion_tokens`，而 DeepSeek 只接受 `max_tokens`，多余字段会返回 400。
-设置 `max_tokens` 后 avante 会自动移除前者。同一位置还设置了 `thinking = { type = "disabled" }`，
-关闭 DeepSeek 默认开启的 thinking 模式以加快响应；需要深度推理时改成 `"enabled"`。
+设置 `max_tokens` 后 avante 会自动移除前者。同一位置设置了 `thinking = { type = "enabled" }`，
+开启 DeepSeek 的 thinking 模式（effort=high）以提升工具调用参数的正确性；追求响应速度时改成
+`"disabled"`。
+
+除了内置工具，`custom_tools` 还注册了固定命令工具，cwd 自动取项目根目录、
+输出超长会自动截断：
+
+| 工具 | 等价命令 |
+|---|---|
+| `run_go_test` | `go test <target>`（默认 `./...`） |
+| `run_pytest` | 优先 `.venv/bin/pytest` / `uv run pytest` / `pytest`，回退 `python -m pytest` |
+| `run_npm_test` | `npm test`（可选参数经 `--` 传入） |
+| `run_python_script` | 用项目解释器运行 `.py` 文件或内联代码 |
+| `git_status` | `git status --short --branch` |
+| `git_log` | `git log --oneline --decorate -n <count>` |
+| `git_branch` | `git branch -vv` |
+| `git_show` | `git show --stat <ref>` |
+
+`git diff` 和 `git commit` 用 avante 内置的 `git_diff` / `git_commit`（后者执行前会弹确认）。
 
 行内补全仍由 `minuet-ai.nvim` + 本地 Ollama 提供（见 `lua/plugins/minuet.lua`），avante 的
 `auto_suggestions` 默认关闭以免高频计费；需要时把 `behaviour.auto_suggestions` 设为 `true`。
