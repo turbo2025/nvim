@@ -178,6 +178,46 @@ return {
 		end,
 	},
 	{
+		"stevearc/oil.nvim",
+		-- oil 要靠目录 buffer 的 BufReadCmd / 文件操作接管，懒加载会
+		-- 错过注册时机，所以常驻加载（几十毫秒）。
+		lazy = false,
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		keys = {
+			{
+				"<leader>E",
+				function()
+					require("oil").open_float()
+				end,
+				desc = "Oil (float)",
+			},
+		},
+		---@module 'oil'
+		---@type oil.SetupOpts
+		opts = {
+			-- 不抢 netrw：`nvim <dir>` 的默认行为保持不变，oil 只通过
+			-- <leader>E（或 :Oil）手动打开。
+			default_file_explorer = false,
+			-- 与 snacks.rename 的 30s 补丁保持一致：gopls 重写 import
+			-- 远超默认 1000ms，超时后 willRenameFiles 会被静默跳过。
+			lsp_file_methods = {
+				timeout_ms = 30000,
+			},
+			float = {
+				padding = 2,
+				max_width = 0.6,
+				max_height = 0.8,
+				border = "rounded",
+			},
+			keymaps = {
+				-- 浮窗里 q 直接关掉；默认的 <C-c> 依然有效
+				["q"] = { "actions.close", mode = "n" },
+			},
+		},
+	},
+	{
 		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,

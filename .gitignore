@@ -1,4 +1,3 @@
 reasonix.toml
 *.log
 .reasonix/
-lazy-lock.json

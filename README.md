@@ -101,6 +101,8 @@ npm i -g @vue/language-server                     # vue（volar）
 - `<leader>cl` — lint（nvim-lint）
 - `<leader>gg` / `<leader>gd` / `<leader>gD` / `<leader>gh` — Git（lazygit / codediff）
 - `<leader>dc` / `<leader>db` / `<leader>do` 等 — DAP 调试
+- `<leader>e` — 文件浏览侧栏（snacks explorer，常驻左侧，再按一次关闭）
+- `<leader>E` — [oil.nvim](https://github.com/stevearc/oil.nvim) 浮动文件管理器，可像编辑文本一样批量重命名/移动/删除，`:w` 生效
 
 ## Git 相关插件
 

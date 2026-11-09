@@ -28,6 +28,9 @@ local skip_ft = {
 	qf = true,
 	trouble = true,
 	terminal = true,
+	-- oil 的目录 buffer 是普通 buflisted buffer（名字形如 oil:///path），
+	-- 不排除的话切到 oil 会自动再拉一个 snacks 侧栏
+	oil = true,
 }
 
 local function snacks()
